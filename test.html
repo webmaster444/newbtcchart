@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>D3 : Animated Quadratic Bezier Curve</title>
+  <script type="text/javascript" src="http://d3js.org/d3.v4.js"></script>
+  <style>
+  svg {
+    font: 10px sans-serif;
+  }
+  </style>
+</head>
+<body>
+  <script>
+  var margin = {top: 20, right: 40, bottom: 10, left: 40},
+  width = 960,
+  height = 650 - margin.top - margin.bottom;
+
+  var svg = d3.select("body").append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .style("margin-left", margin.left + "px");
+
+  var bezier = function bezier(t, p0, p1, p2) {
+    return (1-t)*((1-t)*p0 + t*p1) + t*((1-t)*p1 + t*p2);
+  }
+
+  var bezierLine = function bezierLine(t, p0, p1) {
+    return (1-t)*p0 + t*p1;
+  }
+
+  var x0=0, y0=355;
+  var x1=40, y1=330;
+  var x2=80, y2=355;
+
+  var drag = d3.drag()
+    .on("start", dragstarted)
+    .on("drag", dragmove);
+
+  function dragstarted(d) {
+    d3.event.sourceEvent.stopPropagation();
+  }
+
+  var radius = 10;
+
+    function dragmove() {      
+      x0 = Math.max(radius, Math.min(width - radius, d3.event.x));
+      y0 = Math.max(radius, Math.min(height - radius, d3.event.y));      
+      x0 = d3.event.x - 40;
+      y0 = 355;
+      x1 = d3.event.x;            
+      x2 = d3.event.x + 40;      
+      bCurve.attr("d", "M "+ x0+","+y0 +" Q "+ x1+","+y1 +" "+ x2+","+y2);
+      d3.select('.white_line').attr('x1',x0).attr('y1',y0).attr('x2',x2).attr('y2',y0);
+    };
+
+  var slider = svg.append('g').attr('class','slider');
+  slider.append('line').attr("x1", 0).attr('y1',y0).attr("x2", width).attr('y2',y0).attr('stroke','blue').attr('stroke-width','2px');
+  slider.append('line').attr('class','white_line').attr('x1',x0).attr('y1',y0).attr('x2',x2).attr('y2',y2).attr('stroke','white').attr('stroke-width','2px');
+  
+  var bCurve = svg.append("path")
+  .attr("d", "M "+ x0+","+y0 +" Q "+x1 +','+y1 + ' '+x2+','+y2)
+  .attr("stroke", "blue")
+  .attr("stroke-width", "2px")
+  .attr("fill", "white").call(drag);
+
+  </script>
+</body>
+</html>
