@@ -1,23 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>D3 : Animated Quadratic Bezier Curve</title>
-  <script type="text/javascript" src="https://d3js.org/d3.v4.min.js""></script>
-  <style>
-  svg {
-    font: 10px sans-serif;
-  }
-  text{
-    font-size:15px;
-  }
+.widget{
+	background:#2C2D37;
+}
 
-  .hide{
-    display: none;
-  }
-
-  /* Slider */
-/* The switch - the box around the slider */
+/* Slider */
 .switch {
   position: relative;
   display: inline-block;
@@ -77,15 +62,36 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-  </style>
-</head>
-<body>
-  <label class="switch">
-    <input type="checkbox">
-    <span class="slider round"></span>
-  </label>
-  <script>
+.clearfix{
+	float: none;
+	clear: both;
+}
 
-  </script>
-</body>
-</html>
+.toggle_btn_wrapper{
+	float: right;
+	display: flex;
+	align-items: center;	
+	padding-right: 20px;
+}
+
+.toggle_btn_wrapper label{
+	margin: 10px 15px;
+}
+
+.widget{
+	border-radius: 10px;
+	padding:20px;
+	color: #808187;
+}
+
+#period_date{
+	margin-left: 15px;
+}
+
+.hide{
+    display: none;
+}
+
+path{
+	fill: none;
+}
