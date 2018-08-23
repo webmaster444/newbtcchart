@@ -149,6 +149,15 @@ function drawChart(data){
             .x(function(d) { return x(d.date) + x.bandwidth()/2; })
             .y(function(d) { return y1(d.pr); })
         );
+
+   var circles = svg.selectAll('circle.dot').data(data).enter().append("circle")
+      .attr('class','dot')
+      .attr('cx',function(d){
+        return x(d.date)+x.bandwidth()/2;
+      })
+      .attr('cy',(d)=>y1(d.pr))
+      .attr('r',2)                    
+      .attr("fill","#9D93D3");
 }
 
 function updateChartData(newPeriod){
@@ -173,3 +182,16 @@ function updateChartData(newPeriod){
     drawChart(data);
   })
 }
+
+$(function(){
+  $('#circle_toggle').change(function(){
+    var cT = this.checked;
+    if(!cT){
+      $('#tweet_span').removeClass('active');
+      $('#sentiment_span').addClass('active');
+    }else{
+      $('#tweet_span').addClass('active');
+      $('#sentiment_span').removeClass('active');
+    }
+  })
+})

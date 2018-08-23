@@ -110,3 +110,11 @@ rect{
 #period_span{
   color: #FBFBFB;
 }
+
+#sentiment_span.active{
+  color: #24D17A;
+}
+
+#tweet_span.active{
+  color:#1F88DA;
+}
