@@ -69,7 +69,7 @@ function drawChart(data){
         .attr("class", "y axis")
         .call(yAxis);
 
-    svg.append('text').attr('x',-40).attr('y',30).text('Price').attr('fill','#4C3FC4');
+    svg.append('text').attr('x',-40).attr('y',30).text('Price,$').attr('fill','#4C3FC4');
     svg.selectAll("rect")
         .data(data).enter()
         .append("rect")
