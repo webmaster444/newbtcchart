@@ -39,7 +39,7 @@
 }
 
 input:checked + .slider {
-  background-color: #C5E0F5;
+  background-color: #274B67;
 }
 
 input:focus + .slider {
@@ -47,7 +47,7 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  background-color:#1F88DA;
+  background-color:#1F89DC;
   -webkit-transform: translateX(46px);
   -ms-transform: translateX(46px);
   transform: translateX(46px);
@@ -94,4 +94,19 @@ input:checked + .slider:before {
 
 path{
 	fill: none;
+}
+
+rect{
+  fill: #353541;
+}
+
+.axis path{
+  stroke:#3E3F49;
+}
+.axis text, .axis line{
+  stroke: #72737A;
+}
+
+#period_span{
+  color: #FBFBFB;
 }

@@ -61,21 +61,21 @@
     };
 
   var slider = svg.append('g').attr('class','slider').attr('transform','translate('+margin.left + ',' + margin.top + ')');
-  slider.append('line').attr("x1", 0).attr('y1',y0).attr("x2", width).attr('y2',y0).attr('stroke','blue').attr('stroke-width','2px');
+  slider.append('line').attr("x1", 0).attr('y1',y0).attr("x2", width).attr('y2',y0).attr('stroke','#B0B0B4').attr('stroke-width','2px');
   slider.append('line').attr('class','white_line').attr('x1',x0).attr('y1',y0).attr('x2',x2).attr('y2',y2).attr('stroke',widget_back).attr('stroke-width','2px');
-  slider.append('circle').attr('cx',0).attr('cy',y0).attr('r',2);
-  slider.append('circle').attr('cx',width).attr('cy',y0).attr('r',2);
-  slider.append('text').attr('x',0).attr('y',y0 - 30).text('Slider to adjust');
-  slider.append('text').attr('x',0).attr('y',y0 + 30).text('1 year').attr('class','start_period hide');
-  slider.append('text').attr('x',width).attr('y',y0 + 30).text('1 week').attr('class','end_period').attr('text-anchor','end');
+  slider.append('circle').attr('cx',0).attr('cy',y0).attr('r',2).attr('fill','#B0B0B4');
+  slider.append('circle').attr('cx',width).attr('cy',y0).attr('r',2).attr('fill','#B0B0B4');
+  slider.append('text').attr('x',0).attr('y',y0 - 30).text('Slider to adjust').attr('fill','#97979C');
+  slider.append('text').attr('x',0).attr('y',y0 + 30).text('1 year').attr('class','start_period hide').attr('fill','#97979C');
+  slider.append('text').attr('x',width).attr('y',y0 + 30).text('1 week').attr('class','end_period').attr('fill','#97979C').attr('text-anchor','end');
   var bCurve = slider.append("path")
   .attr("d", "M "+ x0+","+y0 +" Q "+x1 +','+y1 + ' '+x2+','+y2)
-  .attr("stroke", "blue")
+  .attr("stroke", "#B0B0B4")
   .attr("stroke-width", "2px")
   .attr("fill", widget_back).call(drag);
 
-  slider.append('text').attr('class','label_text').attr('x',x1).attr('y',y0 + 10).text('1 year').attr('text-anchor','middle').style('font-size','13px').call(drag);
-  slider.append('circle').attr('class','label_circle').attr('cx',x1).attr('cy',y1 + 50).attr('r',8).attr('fill','green').call(drag);
+  slider.append('text').attr('class','label_text').attr('x',x1).attr('y',y0 + 10).attr('fill','#EEEEEF').text('1 year').attr('text-anchor','middle').style('font-size','13px').call(drag);
+  slider.append('circle').attr('class','label_circle').attr('cx',x1).attr('cy',y1 + 50).attr('r',8).attr('fill','#24D17A').call(drag);
 
   function updatePeriod(x0){
     var svgWidth = width + margin.left + margin.right; 

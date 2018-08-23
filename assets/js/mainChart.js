@@ -56,9 +56,6 @@ function drawChart(data){
 
 	y.domain([yMin, yMax]);
   y1.domain([y1Min, y1Max]);
-	// x1.domain(d3.extent(data, function(d) {
-	//     return d.lt;
-	// }));
 
     var xAxis = d3.axisBottom(x).ticks(10).tickSizeOuter(0).tickFormat(siFormat);
     var yAxis = d3.axisLeft(y1).ticks(5).tickSize(0);
@@ -72,7 +69,7 @@ function drawChart(data){
         .attr("class", "y axis")
         .call(yAxis);
 
-    svg.append('text').attr('x',-40).attr('y',30).text('Price').attr('fill','#808187');
+    svg.append('text').attr('x',-40).attr('y',30).text('Price').attr('fill','#4C3FC4');
     svg.selectAll("rect")
         .data(data).enter()
         .append("rect")
@@ -90,16 +87,6 @@ function drawChart(data){
             return height - y(d.tv);           
         })
 
-    svg.append("path")
-      	.datum(data)
-      	.attr("class", "line")
-      	.style("stroke", function() { return 'red' })      
-      	.attr("d", d3.line()
-           	.curve(d3.curveCardinal)
-           	.x(function(d) { return x(d.date) + x.bandwidth()/2; })
-           	.y(function(d) { return y1(d.pr); })
-       	);
-
     var defs = svg.append("defs");
 
     var gradients = defs.selectAll('linearGradient').data(data).enter().append('linearGradient').attr('id',function(d,i){    	
@@ -115,13 +102,13 @@ function drawChart(data){
 	   		var percent = d.pv / d.sumv * 100;
 	   		return percent+'%';
 	   })
-	   .attr("stop-color", "green")
+	   .attr("stop-color", "#24D17A")
 	   .attr("stop-opacity", 1);
 
 	gradients.append("stop")
 	   .attr('class', 'end')
 	   .attr("offset", "100%")
-	   .attr("stop-color", "red")
+	   .attr("stop-color", "#BE2F3E")
 	   .attr("stop-opacity", 1);
 
 	// var gradient = defs.append("linearGradient")
@@ -143,7 +130,7 @@ function drawChart(data){
 	//    .attr("stop-color", "red")
 	//    .attr("stop-opacity", 1);
 
-   var line = svg.selectAll('circle').data(data).enter().append("circle")
+   var circles = svg.selectAll('circle').data(data).enter().append("circle")
       .attr('cx',function(d){
       	return x(d.date)+x.bandwidth()/2;
       })
@@ -152,6 +139,16 @@ function drawChart(data){
       .attr("fill", function(d,i){
       	return "url('#circleGradient_" + i +"')";
       });
+
+      svg.append("path")
+        .datum(data)
+        .attr("class", "line")
+        .style("stroke", function() { return '#4D40CB' })      
+        .attr("d", d3.line()
+            .curve(d3.curveCardinal)
+            .x(function(d) { return x(d.date) + x.bandwidth()/2; })
+            .y(function(d) { return y1(d.pr); })
+        );
 }
 
 function updateChartData(newPeriod){
