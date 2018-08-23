@@ -22,8 +22,7 @@
   }
 
   function dragend(){
-    if(cuPeriod ==prevPeriod){
-      console.log('no update');
+    if(cuPeriod ==prevPeriod){      
     }else{
       prevPeriod = cuPeriod;
       updateChartData(cuPeriod);
