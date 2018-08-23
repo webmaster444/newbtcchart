@@ -1,15 +1,11 @@
-var url = 'https://decryptz.com/api/v1/charts/d3-tmp?period=1w&symbol=btc&key=JnW39hF43pkbqBo';
+var url = 'https://decryptz.com/api/v1/charts/d3-tmp?period=1y&symbol=btc&key=JnW39hF43pkbqBo';
 var timeFormat = d3.timeFormat("%d");
+var dateTimeFormat = d3.timeFormat("%d %b,%y");
 var timeFormatMonthOnly = d3.timeFormat("%b");
+var monthDay = d3.timeFormat("%b %d");
 var data;
-var siFormat = function(d) {	
-    if (d !== "01")
-        return d;
-    var i = data.findIndex(function(item, i) {
-        return item.dateDisp === d
-    });
-    
-    return d + ' ' + timeFormatMonthOnly(data[i].date);
+var siFormat = function(d) {	    
+    return monthDay(d);
 };
 
 d3.json(url, function(error, jsondata) {        
@@ -20,8 +16,7 @@ d3.json(url, function(error, jsondata) {
         d.sumv = +(d.pv+ d.nv);        
     });
 
-    data = jsondata;
-    console.log(data);
+    data = jsondata;    
     drawChart(data);
 });
 
@@ -35,15 +30,18 @@ function drawChart(data){
   	.attr("height", height + margin.top + margin.bottom)
   	.append('g').attr('transform','translate('+margin.left+ ',' + margin.top+')');
 
-  	var x = d3.scaleBand().range([0, width]).padding(0.1);	
+	var x = d3.scaleBand().range([0, width]).padding(0.1);	
 	var formatSuffixDecimal2 = d3.format(",.2f");
 
+  var circleScale = d3.scaleLinear();
 	var y = d3.scaleLinear().range([height, margin.top]);
 	var y1 = d3.scaleLinear().range([height, margin.top]); // y - axis for line chart
 
 	x.domain(data.map(function(d) {
-	    return d.dateDisp;
+	    return d.date;
 	}));
+
+  circleScale.domain(d3.extent(data,function(d){return d.sumv})).range([1,x.bandwidth()/2]);
 
 	var yMin = d3.min(data.map(function(d){return d.tv - 1000}));
 	var yMax = d3.max(data.map(function(d){return d.tv + 1000}));
@@ -57,7 +55,7 @@ function drawChart(data){
             .curve(d3.curveBasis);
 
 	y.domain([yMin, yMax]);
-    y1.domain([y1Min, y1Max]);
+  y1.domain([y1Min, y1Max]);
 	// x1.domain(d3.extent(data, function(d) {
 	//     return d.lt;
 	// }));
@@ -80,12 +78,12 @@ function drawChart(data){
         .append("rect")
         .attr("width", x.bandwidth())
         .attr('x', function(d) {
-            return x(d.dateDisp)
+            return x(d.date)
         })                        
         .attr("y", function(d) {
             return y(d.tv);            
         })
-        .attr('rx','5px')
+        // .attr('rx','5px')
         // .transition()
         // .duration(2000)
         .attr("height", function(d) {
@@ -98,7 +96,7 @@ function drawChart(data){
       	.style("stroke", function() { return 'red' })      
       	.attr("d", d3.line()
            	.curve(d3.curveCardinal)
-           	.x(function(d) { return x(d.dateDisp) + x.bandwidth()/2; })
+           	.x(function(d) { return x(d.date) + x.bandwidth()/2; })
            	.y(function(d) { return y1(d.pr); })
        	);
 
@@ -147,12 +145,34 @@ function drawChart(data){
 
    var line = svg.selectAll('circle').data(data).enter().append("circle")
       .attr('cx',function(d){
-      	return x(d.dateDisp)+x.bandwidth()/2;
+      	return x(d.date)+x.bandwidth()/2;
       })
       .attr('cy',(d)=>y1(d.pr))
-      .attr('r',20)              
-      // .attr("fill", "url('#svgGradient')");
+      .attr('r',(d)=>circleScale(d.sumv))                    
       .attr("fill", function(d,i){
       	return "url('#circleGradient_" + i +"')";
       });
+}
+
+function updateChartData(newPeriod){
+  url = 'https://decryptz.com/api/v1/charts/d3-tmp?period='+newPeriod+'&symbol=btc&key=JnW39hF43pkbqBo'; 
+  d3.json(url,function(error, jsondata) {        
+
+    jsondata.forEach(function(d){
+        d.date = Date.parse(d.dt);
+        d.dateDisp = timeFormat(Date.parse(d.dt));
+        d.sumv = +(d.pv+ d.nv);        
+    });
+
+    data = jsondata;    
+    
+    $('#period_date').html(dateTimeFormat(Date.parse(data[0].dt)) +" - " + dateTimeFormat(Date.parse(data[data.length-1].dt)))
+
+  // $("#mainchart")
+    if (!$('#mainchart').is(':empty')) {
+        $("#mainchart").empty();
+    }
+
+    drawChart(data);
+  })
 }

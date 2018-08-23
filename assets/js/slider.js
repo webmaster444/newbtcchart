@@ -1,31 +1,34 @@
   var margin = {top: 20, right: 40, bottom: 10, left: 40},
   width = 960,
   height = 120 - margin.top - margin.bottom;
+  var prevPeriod = "1y";
+  var cuPeriod;
   var widget_back = '#2C2D37';
   var svg = d3.select("#slider").append("svg")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
   
-  // var bezier = function bezier(t, p0, p1, p2) {
-  //   return (1-t)*((1-t)*p0 + t*p1) + t*((1-t)*p1 + t*p2);
-  // }
-
-  // var bezierLine = function bezierLine(t, p0, p1) {
-  //   return (1-t)*p0 + t*p1;
-  // }
-
   var x0=0, y0=55;
   var x1=40, y1=30;
   var x2=80, y2=55;
 
   var drag = d3.drag()
     .on("start", dragstarted)
-    .on("drag", dragmove);
+    .on("drag", dragmove)
+    .on("end",dragend)
 
   function dragstarted(d) {
     d3.event.sourceEvent.stopPropagation();
   }
 
+  function dragend(){
+    if(cuPeriod ==prevPeriod){
+      console.log('no update');
+    }else{
+      prevPeriod = cuPeriod;
+      updateChartData(cuPeriod);
+    }
+  }
   var radius = 10;
 
     function dragmove() {      
@@ -101,26 +104,32 @@
     
     switch(period){
       case "1y":
+        cuPeriod = '1y';
         $('.label_text').text('1 year');
         $('#period_span').text('1 year');
         break;
       case "6m":
+        cuPeriod = '6m';
         $('.label_text').text('6 months');
         $('#period_span').text('6 months');
         break;
       case "2m":
+        cuPeriod = '2m';
         $('.label_text').text('2 months');
         $('#period_span').text('2 months');
         break;
       case "1m":
+        cuPeriod = '1m';
         $('.label_text').text('1 month');
         $('#period_span').text('1 month');
         break;
       case "2w":
+        cuPeriod = '2w';
         $('.label_text').text('2 weeks');
         $('#period_span').text('2 weeks');
         break;
       case "1w":
+        cuPeriod = '1w';
         $('.label_text').text('1 week');
         $('#period_span').text('1 week');
         break;
