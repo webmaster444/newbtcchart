@@ -29,6 +29,7 @@ d3.json(url, function(error, jsondata) {
 });
 
 function drawChart(data){
+  if(!$('#circle_toggle').prop('checked')){      
   	var svg = d3.select("#mainchart").append("svg")
   	.attr("width", width + margin.left + margin.right)
   	.attr("height", height + margin.top + margin.bottom)
@@ -165,6 +166,90 @@ function drawChart(data){
       .duration(2000)      
       .attr('r',2)                    
       .attr("fill","#9D93D3");
+
+    }else{
+      console.log($('#circle_toggle').prop('checked'));    
+      var svg = d3.select("#mainchart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append('g').attr('transform','translate('+margin.left+ ',' + margin.top+')');
+
+  x = d3.scaleBand().range([0, width]).padding(0.1);  
+  var formatSuffixDecimal2 = d3.format(",.2f");
+  
+  y = d3.scaleLinear().range([height, margin.top]);
+  var y1 = d3.scaleLinear().range([height, margin.top]); // y - axis for line chart
+
+  x.domain(data.map(function(d) {
+      return d.date;
+  }));
+
+  circleScale.domain(d3.extent(data,function(d){return d.sumv})).range([1,x.bandwidth()/2]);
+  
+  ttlCircleScale.domain(d3.extent(data,function(d){return d.tv})).range([1,x.bandwidth()/2]);
+
+  var yMin = d3.min(data.map(function(d){return d.tv - 1000}));
+  var yMax = d3.max(data.map(function(d){return d.tv + 1000}));
+
+  var y1Min = d3.min(data.map(function(d){return d.pr - 50}));
+  var y1Max = d3.max(data.map(function(d){return d.pr + 50}));
+
+  var interpolate = d3.line()
+      .x(d => d.dateDisp )
+            .y(d => d.pr )
+            .curve(d3.curveBasis);
+
+  y.domain([0, yMax]);
+  y1.domain([y1Min, y1Max]);
+
+    var xAxis = d3.axisBottom(x).ticks(10).tickSizeOuter(0).tickFormat(siFormat);
+    var yAxis = d3.axisLeft(y1).ticks(5).tickSize(0);
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+    svg.append('text').attr('x',-40).attr('y',30).text('Price,$').attr('fill','#4C3FC4');
+
+   var circles = svg.selectAll('circle').data(data).enter().append("circle")
+      .attr('class','sum')
+      .attr('cx',function(d){
+        return x(d.date)+x.bandwidth()/2;
+      })
+      .attr('cy',(d)=>y1(d.pr))
+      .attr('r',0)
+      .attr('fill','#1f89dc')
+      .transition()
+      .duration(2000)
+      .attr('r',(d)=>ttlCircleScale(d.tv));
+
+      svg.append("path")
+        .datum(data)
+        .attr("class", "line")
+        .style("stroke", function() { return '#4D40CB' })      
+        .attr("d", d3.line()
+            .curve(d3.curveCardinal)
+            .x(function(d) { return x(d.date) + x.bandwidth()/2; })
+            .y(function(d) { return y1(d.pr); })
+        ).call(transition);
+
+   var dotCircles = svg.selectAll('circle.dot').data(data).enter().append("circle")
+      .attr('class','dot')
+      .attr('cx',function(d){
+        return x(d.date)+x.bandwidth()/2;
+      })
+      .attr('cy',(d)=>y1(d.pr))
+      .attr('r',0)
+      .transition()
+      .duration(2000)      
+      .attr('r',2)                    
+      .attr("fill","#9D93D3");
+    }
 }
 
 function updateCircles(toggle){
