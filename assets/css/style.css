@@ -126,10 +126,10 @@ rect{
     display: none;
     width: auto;
     height: auto;
-    background: none repeat scroll 0 0 white;
-    border: 0 none;
-    border-radius: 8px 8px 8px 8px;
-    box-shadow: -3px 3px 15px #888888;
+    background-color: #21222d;
+    border-radius: 8px;    
+    border: 0 none;    
+    box-shadow: -3px 3px 15px rgba(0,0,0,0.5);
     color: black;
     font: 15px sans-serif;
     padding: 10px;
@@ -142,4 +142,17 @@ rect{
 
 .toolTip td{
   vertical-align: top;
+  padding: 5px 15px;
+}
+
+td img, td div{
+  margin-right: 5px;
+}
+
+.tooltip-label{
+  color: rgba(255,255,255,.4);
+}
+
+td{
+  color: rgb(255,255,255);
 }

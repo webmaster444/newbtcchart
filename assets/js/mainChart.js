@@ -93,7 +93,7 @@ function drawChart(data){
             l = l - 1
             elementData = elements[l].__data__;
             var index = $(elements[l].parentNode).index();          
-            divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td>"+d.pr+"<br/>| Price</td><td>"+(d.pv/d.sumv*100) +"%<br/>|Positive</td></tr><tr><td></td><td>"+d.tv+"<br>|Total Tweet Volume</td><td>" +(d.nv/d.sumv*100)+"%<br>|Negative</td></table>");
+            divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td><img src='assets/price.png' width='15px' alt='Price'>"+d.pr+"<br/><span class='tooltip-label'>| Price</span></td><td><div style='width:15px;display:inline-block;border-radius:1px;background:#24D17A;height:15px;'></div>"+(d.pv/d.sumv*100).toFixed(2) +"%<br/><span class='tooltip-label'>| Positive</span></td></tr><tr><td></td><td><img src='assets/barchart.png' width='15px' alt='Price'>"+d.tv+"<br><span class='tooltip-label'>| Total Tweet<br/> Volume</span></td><td><div style='width:15px;display:inline-block;border-radius:1px;background:#b02d42;height:15px;'></div>" +(d.nv/d.sumv*100).toFixed(2) +"%<br><span class='tooltip-label'>|Negative</span></td></table>");
         }).on('mouseout', function(d) {
             divTooltip.style("display", "none");
         })
