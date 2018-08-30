@@ -1,5 +1,6 @@
 .widget{
 	background:#2C2D37;
+  position: relative;
 }
 
 /* Slider */
@@ -117,4 +118,28 @@ rect{
 
 #tweet_span.active{
   color:#1F88DA;
+}
+
+.toolTip {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    position: absolute;
+    display: none;
+    width: auto;
+    height: auto;
+    background: none repeat scroll 0 0 white;
+    border: 0 none;
+    border-radius: 8px 8px 8px 8px;
+    box-shadow: -3px 3px 15px #888888;
+    color: black;
+    font: 15px sans-serif;
+    padding: 10px;
+    text-align: center;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    top: 10px;
+}
+
+.toolTip td{
+  vertical-align: top;
 }

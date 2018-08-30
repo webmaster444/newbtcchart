@@ -80,20 +80,17 @@
     var svgWidth = width + margin.left + margin.right; 
     var period;
     //check slider positions divide by 6
-    var yPeriod = svgWidth/6;  // 1y
-    var m6Period = svgWidth/3; // 6m
-    var m2Period = svgWidth / 2; //2m
-    var m1Period = m6Period * 2; //1m
-    var w2Period = m1Period + yPeriod; //2w
+    var yPeriod = svgWidth/5;  // 1y
+    var m6Period = yPeriod * 2; // 6m    
+    var m1Period = yPeriod * 3; //1m
+    var w2Period = yPeriod *4; //2w
     var w1Period = svgWidth //1w
 
     if(x0 <= yPeriod){
       period = "1y";
     }else if(x0 > yPeriod && x0<=m6Period){
       period = "6m";
-    }else if(x0 > m6Period && x0<=m2Period){
-      period = "2m";
-    }else if(x0 > m2Period && x0 <=m1Period){
+    }else if(x0 > m6Period && x0 <=m1Period){
       period = "1m";
     }else if(x0 > m1Period && x0 <=w2Period){
       period = "2w";
@@ -111,11 +108,6 @@
         cuPeriod = '6m';
         $('.label_text').text('6 months');
         $('#period_span').text('6 months');
-        break;
-      case "2m":
-        cuPeriod = '2m';
-        $('.label_text').text('2 months');
-        $('#period_span').text('2 months');
         break;
       case "1m":
         cuPeriod = '1m';

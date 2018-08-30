@@ -8,6 +8,9 @@ var x, y;
 var siFormat = function(d) {	    
     return monthDay(d);
 };
+
+var divTooltip = d3.select(".widget").append("div").attr("class", "toolTip");
+
 var ttlCircleScale = d3.scaleLinear();
 var circleScale = d3.scaleLinear();
 var margin = {top: 20, right: 40, bottom: 50, left: 40},
@@ -81,19 +84,28 @@ function drawChart(data){
         })                  
         .attr("y", function(d) {
             return y(0);            
+        }).on("mousemove", function(d) {                  
+            divTooltip.style("display", "inline-block");
+            var x = d3.event.pageX,
+                y = d3.event.pageY
+            var elements = document.querySelectorAll(':hover');
+            l = elements.length
+            l = l - 1
+            elementData = elements[l].__data__;
+            var index = $(elements[l].parentNode).index();          
+            divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td>"+d.pr+"<br/>| Price</td><td>"+(d.pv/d.sumv*100) +"%<br/>|Positive</td></tr><tr><td></td><td>"+d.tv+"<br>|Total Tweet Volume</td><td>" +(d.nv/d.sumv*100)+"%<br>|Negative</td></table>");
+        }).on('mouseout', function(d) {
+            divTooltip.style("display", "none");
         })
+
         .transition()
         .duration(2000)      
         .attr("y", function(d) {
             return y(d.tv);            
-        })
-        // .attr('rx','5px')        
-        .attr("height", function(d) {
-          console.log(y(d.tv));
-          console.log(height);
+        })        
+        .attr("height", function(d) {                  
             return height - y(d.tv);           
         })
-
     var defs = svg.append("defs");
 
     var gradients = defs.selectAll('linearGradient').data(data).enter().append('linearGradient').attr('id',function(d,i){    	
@@ -124,10 +136,13 @@ function drawChart(data){
       	return x(d.date)+x.bandwidth()/2;
       })
       .attr('cy',(d)=>y1(d.pr))
-      .attr('r',(d)=>circleScale(d.sumv))                    
       .attr("fill", function(d,i){
-      	return "url('#circleGradient_" + i +"')";
-      });
+        return "url('#circleGradient_" + i +"')";
+      })
+      .attr('r',0)
+      .transition()
+      .duration(2000)
+      .attr('r',(d)=>circleScale(d.sumv));
 
       svg.append("path")
         .datum(data)
@@ -137,7 +152,7 @@ function drawChart(data){
             .curve(d3.curveCardinal)
             .x(function(d) { return x(d.date) + x.bandwidth()/2; })
             .y(function(d) { return y1(d.pr); })
-        );
+        ).call(transition);
 
    var dotCircles = svg.selectAll('circle.dot').data(data).enter().append("circle")
       .attr('class','dot')
@@ -145,6 +160,9 @@ function drawChart(data){
         return x(d.date)+x.bandwidth()/2;
       })
       .attr('cy',(d)=>y1(d.pr))
+      .attr('r',0)
+      .transition()
+      .duration(2000)      
       .attr('r',2)                    
       .attr("fill","#9D93D3");
 }
@@ -208,3 +226,15 @@ $(function(){
     updateCircles(cT);
   })
 })
+
+function transition(path) {
+    path.transition()
+        .duration(2000)
+        .attrTween("stroke-dasharray", tweenDash);
+}
+
+function tweenDash() {
+    var l = this.getTotalLength(),
+        i = d3.interpolateString("0," + l, l + "," + l);
+    return function (t) { return i(t); };
+}
