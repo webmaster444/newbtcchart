@@ -75,6 +75,9 @@ input:checked + .slider:before {
 	padding-right: 20px;
 }
 
+.pull-right{
+  float: right;
+}
 .toggle_btn_wrapper label{
 	margin: 10px 15px;
 }
@@ -155,4 +158,27 @@ td img, td div{
 
 td{
   color: rgb(255,255,255);
+}
+
+.dash_circle{
+    stroke-dasharray: 2px;
+    stroke-width: 1px;
+    stroke: beige;
+}
+
+.dash_line{
+    stroke-dasharray: 4px;
+    stroke-width: 1px;
+    stroke: beige; 
+    opacity: .5;
+}
+
+.circle_tooltip{
+  position: absolute;
+  right: 0;
+  top: 70px;
+}
+.circle_tooltip text{
+  fill: beige;
+  opacity: .8;
 }
