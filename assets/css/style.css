@@ -133,7 +133,7 @@ rect{
     color: black;
     font: 15px sans-serif;
     padding: 10px;
-    text-align: center;
+    text-align: left;
     left: 50%;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
