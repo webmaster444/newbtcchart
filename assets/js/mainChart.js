@@ -82,7 +82,7 @@ function drawChart(data) {
         y1.domain([y1Min, y1Max]);
 
         var xAxis = d3.axisBottom(x).ticks(10).tickSizeOuter(0).tickFormat(siFormat);
-        var yAxis = d3.axisLeft(y1).ticks(5).tickSize(0);
+        var yAxis = d3.axisLeft(y1).ticks(5).tickSize(-width);
 
         svg.append("g")
             .attr("class", "x axis")
@@ -302,7 +302,7 @@ function drawChart(data) {
             .attr("class", "y axis")
             .call(yAxis);
 
-        svg.append('text').attr('x', -40).attr('y', 30).text('Price,$').attr('fill', '#4C3FC4');
+        svg.append('text').attr('x', -40).attr('y', 30).text('Price,$').attr('fill', '#4C3FC4').attr('class','font_light');
 
         var circles = svg.selectAll('circle').data(data).enter().append("circle")
             .attr('class', 'sum')

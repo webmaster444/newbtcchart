@@ -57,7 +57,7 @@
   });  
   slider.append('circle').attr('cx',0).attr('cy',y0).attr('r',2).attr('fill','#B0B0B4');
   slider.append('circle').attr('cx',width).attr('cy',y0).attr('r',2).attr('fill','#B0B0B4');
-  slider.append('text').attr('x',0).attr('y',y0 - 30).text('Slider to adjust').attr('fill','#97979C');
+  slider.append('text').attr('x',0).attr('y',y0 - 30).text('Slider to adjust').attr('fill','white').attr('class','font_bold').style('opacity','.4').style('font-size','12px');
   slider.append('text').attr('x',0).attr('y',y0 + 30).text('1 year').attr('class','start_period hide').attr('fill','#97979C');
   slider.append('text').attr('x',width).attr('y',y0 + 30).text('1 week').attr('class','end_period').attr('fill','#97979C').attr('text-anchor','end');
   var slider_g = slider.append('g').attr('class','slider_g').attr('transform','translate(0,0)').call(drag);

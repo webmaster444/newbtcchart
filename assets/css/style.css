@@ -1,6 +1,10 @@
+body, html{
+  font-family: 'Source Sans Pro', sans-serif;  
+}
 .widget{
 	background:#2C2D37;
-  position: relative;
+  position: relative;  
+  box-shadow: 0 6px 10px 0 rgba(26,27,36,0.6);
 }
 
 /* Slider */
@@ -101,7 +105,7 @@ path{
 }
 
 rect{
-  fill: #353541;
+  fill: #353642;
 }
 
 .axis path{
@@ -189,4 +193,23 @@ td{
 
 rect.hover_rect{
   fill:#5243DE;
+}
+
+.font_bold{
+  font-weight: 600;
+}
+
+.font_light{
+  font-weight: normal;
+}
+.circle_tooltip text{
+  font-weight: normal;
+}
+
+.y.axis path.domain{
+  display: none;
+}
+
+.y.axis line{
+  stroke-dasharray: 5 5;
 }
