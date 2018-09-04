@@ -98,7 +98,9 @@ function drawChart(data) {
             .data(data).enter()
             .append("rect")
             .attr('rx',10)
-            .attr('class','path_rect')            
+            .attr('class',function(d,i){
+                return 'path_rect rect_'+i;
+            })            
             .attr("width", x.bandwidth())
             .attr('x', function(d) {
                 return x(d.date)
@@ -106,7 +108,7 @@ function drawChart(data) {
             .attr("y", function(d) {
                 return y(0);
             })
-            .on("mousemove", function(d) {
+            .on("mousemove", function(d,i) {
                 divTooltip.style("display", "inline-block");
                 var x = d3.event.pageX,
                     y = d3.event.pageY
@@ -116,8 +118,10 @@ function drawChart(data) {
                 elementData = elements[l].__data__;
                 var index = $(elements[l].parentNode).index();
                 divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td><img src='assets/price.png' width='15px' alt='Price'>" + d.pr + "<br/><span class='tooltip-label'>| Price</span></td><td><div style='width:15px;display:inline-block;border-radius:1px;background:#24D17A;height:15px;'></div>" + (d.pv / d.sumv * 100).toFixed(2) + "%<br/><span class='tooltip-label'>| Positive</span></td></tr><tr><td></td><td><img src='assets/barchart.png' width='15px' alt='Price'>" + d.tv + "<br><span class='tooltip-label'>| Total Tweet<br/> Volume</span></td><td><div style='width:15px;display:inline-block;border-radius:1px;background:#b02d42;height:15px;'></div>" + (d.nv / d.sumv * 100).toFixed(2) + "%<br><span class='tooltip-label'>|Negative</span></td></table>");
-            }).on('mouseout', function(d) {
+                d3.selectAll('rect.rect_'+i).classed('hover_rect',true);
+            }).on('mouseout', function(d,i) {
                 divTooltip.style("display", "none");
+                d3.selectAll('rect.rect_'+i).classed('hover_rect',false);
             })            
 
             .transition()
@@ -132,7 +136,9 @@ function drawChart(data) {
         svg.selectAll("rect.no_round_rect")
             .data(data).enter()
             .append("rect")            
-            .attr('class','no_round_rect')            
+            .attr('class',function(d,i){
+                return 'no_round_rect rect_'+i;
+            })            
             .attr("width", x.bandwidth())
             .attr('x', function(d) {
                 return x(d.date)
@@ -140,7 +146,7 @@ function drawChart(data) {
             .attr("y", function(d) {
                 return y(0);
             })
-            .on("mousemove", function(d) {
+            .on("mousemove", function(d,i) {
                 divTooltip.style("display", "inline-block");
                 var x = d3.event.pageX,
                     y = d3.event.pageY
@@ -150,8 +156,10 @@ function drawChart(data) {
                 elementData = elements[l].__data__;
                 var index = $(elements[l].parentNode).index();
                 divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td><img src='assets/price.png' width='15px' alt='Price'>" + d.pr + "<br/><span class='tooltip-label'>| Price</span></td><td><div style='width:15px;display:inline-block;border-radius:1px;background:#24D17A;height:15px;'></div>" + (d.pv / d.sumv * 100).toFixed(2) + "%<br/><span class='tooltip-label'>| Positive</span></td></tr><tr><td></td><td><img src='assets/barchart.png' width='15px' alt='Price'>" + d.tv + "<br><span class='tooltip-label'>| Total Tweet<br/> Volume</span></td><td><div style='width:15px;display:inline-block;border-radius:1px;background:#b02d42;height:15px;'></div>" + (d.nv / d.sumv * 100).toFixed(2) + "%<br><span class='tooltip-label'>|Negative</span></td></table>");
-            }).on('mouseout', function(d) {
+                d3.selectAll('rect.rect_'+i).classed('hover_rect',true);
+            }).on('mouseout', function(d,i) {
                 divTooltip.style("display", "none");
+                d3.selectAll('rect.rect_'+i).classed('hover_rect',false);
             })            
 
             .transition()

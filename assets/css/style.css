@@ -186,3 +186,7 @@ td{
 .path_rect{
   fill:#353541;
 }
+
+rect.hover_rect{
+  fill:#5243DE;
+}
