@@ -182,11 +182,17 @@ function drawChart(data) {
 
         gradients.append("stop")
             .attr('class', 'start')
+            .attr("offset", '0%')
+            .attr("stop-color", "#24D17A")
+            .attr("stop-opacity", 1);
+
+        gradients.append("stop")
+            .attr('class', 'start')
             .attr("offset", function(d) {
                 var percent = d.pv / d.sumv * 100;
                 return percent + '%';
             })
-            .attr("stop-color", "#24D17A")
+            .attr("stop-color", "#7A7658")
             .attr("stop-opacity", 1);
 
         gradients.append("stop")
