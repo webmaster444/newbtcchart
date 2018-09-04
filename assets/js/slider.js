@@ -22,59 +22,57 @@
   }
 
   function dragend(){
-    if(cuPeriod ==prevPeriod){      
-    }else{
-      prevPeriod = cuPeriod;
-      updateChartData(cuPeriod);
-    }
+
   }
   var radius = 10;
 
     function dragmove() {      
       slider.select('.start_period').classed('hide',false);
       slider.select('.end_period').classed('hide',false);
-      x0 = d3.event.x - 40;
-      if(x0 < 0){
-        x0 = 0;
-        x1 = 40;
-        x2 = 80;        
+      var x = d3.event.x - 40;
+      if(x < 0){
+        x = 0;                
         slider.select('.start_period').classed('hide',true);
-      }else{
-        x1 = d3.event.x;            
-        x2 = d3.event.x + 40;      
-      }
-
-      if(x2 > width){
-        x2 = width;
-        x1 = x2- 40;
-        x0 = x2 - 80;        
+      }else if(x+80>width){
+        x = width - 80;                   
         slider.select('.end_period').classed('hide',true);
-      }
+      }      
       y0 = 55;      
-      bCurve.attr("d", "M "+ x0+","+y0 +" Q "+ x1+","+y1 +" "+ x2+","+y2);
-      d3.select('.white_line').attr('x1',x0).attr('y1',y0).attr('x2',x2).attr('y2',y0);
-      slider.select('.label_circle').attr('cx',x1);      
-      slider.select('.label_text').attr('x',x1);      
-
-      updatePeriod(x1);
+      d3.selectAll('.slider_g').attr('transform','translate('+x+',0)');
+      updatePeriod(x);
     };
 
   var slider = svg.append('g').attr('class','slider').attr('transform','translate('+margin.left + ',' + margin.top + ')');
-  slider.append('line').attr("x1", 0).attr('y1',y0).attr("x2", width).attr('y2',y0).attr('stroke','#B0B0B4').attr('stroke-width','2px');
-  slider.append('line').attr('class','white_line').attr('x1',x0).attr('y1',y0).attr('x2',x2).attr('y2',y2).attr('stroke',widget_back).attr('stroke-width','2px');
+  slider.append('line').attr("x1", 0).attr('class','main_line').attr('y1',y0).attr("x2", width).attr('y2',y0).attr('stroke','#B0B0B4').attr('stroke-width','2px').on('mousedown',function(d){                                
+                    var x = d3.mouse(this)[0] - 40;
+                    if(x+80 >width){
+                      x = width - 80;
+                      slider.select('.end_period').classed('hide',true);
+                    }else if(x - 40 < 0){
+                      x = 0;
+                      slider.select('.start_period').classed('hide',true);
+                    }
+                    d3.selectAll('.slider_g').transition().duration(2000).attr('transform','translate('+x+',0)');
+                    updatePeriod(x);
+  });  
   slider.append('circle').attr('cx',0).attr('cy',y0).attr('r',2).attr('fill','#B0B0B4');
   slider.append('circle').attr('cx',width).attr('cy',y0).attr('r',2).attr('fill','#B0B0B4');
   slider.append('text').attr('x',0).attr('y',y0 - 30).text('Slider to adjust').attr('fill','#97979C');
   slider.append('text').attr('x',0).attr('y',y0 + 30).text('1 year').attr('class','start_period hide').attr('fill','#97979C');
   slider.append('text').attr('x',width).attr('y',y0 + 30).text('1 week').attr('class','end_period').attr('fill','#97979C').attr('text-anchor','end');
-  var bCurve = slider.append("path")
+  var slider_g = slider.append('g').attr('class','slider_g').attr('transform','translate(0,0)').call(drag);
+  slider_g.append('line').attr('class','white_line').attr('x1',x0).attr('y1',y0).attr('x2',x2).attr('y2',y2).attr('stroke',widget_back).attr('stroke-width','2px');
+  var bCurve = slider_g.append("path")
   .attr("d", "M "+ x0+","+y0 +" Q "+x1 +','+y1 + ' '+x2+','+y2)
   .attr("stroke", "#B0B0B4")
   .attr("stroke-width", "2px")
-  .attr("fill", widget_back).call(drag);
+  .attr("fill", widget_back)
+  // .call(drag);
 
-  slider.append('text').attr('class','label_text').attr('x',x1).attr('y',y0 + 10).attr('fill','#EEEEEF').text('1 year').attr('text-anchor','middle').style('font-size','13px').call(drag);
-  slider.append('circle').attr('class','label_circle').attr('cx',x1).attr('cy',y1 + 50).attr('r',8).attr('fill','#24D17A').call(drag);
+  slider_g.append('text').attr('class','label_text').attr('x',x1).attr('y',y0 + 10).attr('fill','#EEEEEF').text('1 year').attr('text-anchor','middle').style('font-size','13px')
+  // .call(drag);
+  slider_g.append('circle').attr('class','label_circle').attr('cx',x1).attr('cy',y1 + 50).attr('r',8).attr('fill','#24D17A')
+  // .call(drag);  
 
   function updatePeriod(x0){
     var svgWidth = width + margin.left + margin.right; 
@@ -124,5 +122,11 @@
         $('.label_text').text('1 week');
         $('#period_span').text('1 week');
         break;
+    }
+
+    if(cuPeriod ==prevPeriod){      
+    }else{
+      prevPeriod = cuPeriod;
+      updateChartData(cuPeriod);
     }
   }

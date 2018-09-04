@@ -182,3 +182,7 @@ td{
   fill: beige;
   opacity: .8;
 }
+
+.path_rect{
+  fill:#353541;
+}

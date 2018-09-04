@@ -94,16 +94,19 @@ function drawChart(data) {
             .call(yAxis);
 
         svg.append('text').attr('x', -40).attr('y', 30).text('Price,$').attr('fill', '#4C3FC4');
-        svg.selectAll("rect")
+        svg.selectAll("rect.path_rect")
             .data(data).enter()
             .append("rect")
+            .attr('rx',10)
+            .attr('class','path_rect')            
             .attr("width", x.bandwidth())
             .attr('x', function(d) {
                 return x(d.date)
             })
             .attr("y", function(d) {
                 return y(0);
-            }).on("mousemove", function(d) {
+            })
+            .on("mousemove", function(d) {
                 divTooltip.style("display", "inline-block");
                 var x = d3.event.pageX,
                     y = d3.event.pageY
@@ -115,7 +118,7 @@ function drawChart(data) {
                 divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td><img src='assets/price.png' width='15px' alt='Price'>" + d.pr + "<br/><span class='tooltip-label'>| Price</span></td><td><div style='width:15px;display:inline-block;border-radius:1px;background:#24D17A;height:15px;'></div>" + (d.pv / d.sumv * 100).toFixed(2) + "%<br/><span class='tooltip-label'>| Positive</span></td></tr><tr><td></td><td><img src='assets/barchart.png' width='15px' alt='Price'>" + d.tv + "<br><span class='tooltip-label'>| Total Tweet<br/> Volume</span></td><td><div style='width:15px;display:inline-block;border-radius:1px;background:#b02d42;height:15px;'></div>" + (d.nv / d.sumv * 100).toFixed(2) + "%<br><span class='tooltip-label'>|Negative</span></td></table>");
             }).on('mouseout', function(d) {
                 divTooltip.style("display", "none");
-            })
+            })            
 
             .transition()
             .duration(2000)
@@ -125,6 +128,41 @@ function drawChart(data) {
             .attr("height", function(d) {
                 return height - y(d.tv);
             })
+
+        svg.selectAll("rect.no_round_rect")
+            .data(data).enter()
+            .append("rect")            
+            .attr('class','no_round_rect')            
+            .attr("width", x.bandwidth())
+            .attr('x', function(d) {
+                return x(d.date)
+            })
+            .attr("y", function(d) {
+                return y(0);
+            })
+            .on("mousemove", function(d) {
+                divTooltip.style("display", "inline-block");
+                var x = d3.event.pageX,
+                    y = d3.event.pageY
+                var elements = document.querySelectorAll(':hover');
+                l = elements.length
+                l = l - 1
+                elementData = elements[l].__data__;
+                var index = $(elements[l].parentNode).index();
+                divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td><img src='assets/price.png' width='15px' alt='Price'>" + d.pr + "<br/><span class='tooltip-label'>| Price</span></td><td><div style='width:15px;display:inline-block;border-radius:1px;background:#24D17A;height:15px;'></div>" + (d.pv / d.sumv * 100).toFixed(2) + "%<br/><span class='tooltip-label'>| Positive</span></td></tr><tr><td></td><td><img src='assets/barchart.png' width='15px' alt='Price'>" + d.tv + "<br><span class='tooltip-label'>| Total Tweet<br/> Volume</span></td><td><div style='width:15px;display:inline-block;border-radius:1px;background:#b02d42;height:15px;'></div>" + (d.nv / d.sumv * 100).toFixed(2) + "%<br><span class='tooltip-label'>|Negative</span></td></table>");
+            }).on('mouseout', function(d) {
+                divTooltip.style("display", "none");
+            })            
+
+            .transition()
+            .duration(2000)
+            .attr("y", function(d) {
+                return y(d.tv) + 10;
+            })
+            .attr("height", function(d) {
+                return height - y(d.tv) - 10;
+            })
+
         var defs = svg.append("defs");
 
         var gradients = defs.selectAll('linearGradient').data(data).enter().append('linearGradient').attr('id', function(d, i) {
@@ -366,4 +404,19 @@ function tweenDash() {
     return function(t) {
         return i(t);
     };
+}
+
+function rightRoundedRect(x, y, w, h, r) {
+    var retval;
+    retval  = "M" + (x + r) + "," + y;
+    retval += "h" + (w - 2*r);
+    retval += "a" + r + "," + r + " 0 0 1 " + r + "," + r;
+    retval += "v" + (h - 2*r);    
+    retval += "v" + r; retval += "h" + -r;
+    retval += "h" + (2*r - w);    
+    retval += "h" + -r; retval += "v" + -r;
+    retval += "v" + (2*r - h);
+    retval += "a" + r + "," + r + " 0 0 1 " + r + "," + -r;     
+    retval += "z";
+    return retval;
 }
