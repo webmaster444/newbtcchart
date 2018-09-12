@@ -54,7 +54,7 @@ function drawChart(data) {
         x = d3.scaleBand().range([0, width]).padding(0.1);
         var formatSuffixDecimal2 = d3.format(",.2f");
 
-        y = d3.scaleLinear().range([height, margin.top]);
+        y = d3.scaleLinear().range([height, margin.top + height * 0.25]);
         var y1 = d3.scaleLinear().range([height, margin.top]); // y - axis for line chart
 
         x.domain(data.map(function(d) {
@@ -458,3 +458,11 @@ function wrap(text, width) {
         }
     });
 }
+
+jQuery('label.switch').on('mouseover',function(){
+    $('.circle_tooltip').removeClass('hide');
+});
+
+jQuery('label.switch').on('mouseout',function(){
+    $('.circle_tooltip').addClass('hide');
+});
