@@ -21,8 +21,8 @@
     d3.event.sourceEvent.stopPropagation();
   }
 
-  function dragend(){
-
+  function dragend(){    
+    transitionToItsPlace(cuPeriod);
   }
   var radius = 10;
 
@@ -53,7 +53,7 @@
                       slider.select('.start_period').classed('hide',true);
                     }
                     d3.selectAll('.slider_g').transition().duration(2000).attr('transform','translate('+x+',0)');
-                    updatePeriod(x);
+                    updatePeriod(x,true);                    
   });  
   slider.append('circle').attr('cx',0).attr('cy',y0).attr('r',2).attr('fill','#B0B0B4');
   slider.append('circle').attr('cx',width).attr('cy',y0).attr('r',2).attr('fill','#B0B0B4');
@@ -74,7 +74,7 @@
   slider_g.append('circle').attr('class','label_circle').attr('cx',x1).attr('cy',y1 + 50).attr('r',8).attr('fill','#24D17A')
   // .call(drag);  
 
-  function updatePeriod(x0){
+  function updatePeriod(x0,tr=false){
     var svgWidth = width + margin.left + margin.right; 
     var period;
     //check slider positions divide by 6
@@ -123,10 +123,42 @@
         $('#period_span').text('1 week');
         break;
     }
-
+    
+    if(tr){
+      transitionToItsPlace(cuPeriod);
+    }
     if(cuPeriod ==prevPeriod){      
     }else{
       prevPeriod = cuPeriod;
       updateChartData(cuPeriod);
     }
+  }
+
+  function transitionToItsPlace(period){
+    var svgWidth = width + margin.left + margin.right; 
+    var period;
+    //check slider positions divide by 6
+    var yPeriod = svgWidth/5;  // 1y
+    var m6Period = yPeriod * 2; // 6m    
+    var m1Period = yPeriod * 3; //1m
+    var w2Period = yPeriod *4; //2w
+    var w1Period = svgWidth //1w
+    switch(period){
+      case "1y":
+        x = 0;
+      break;
+      case "6m":
+        x = yPeriod;
+      break;
+      case "1m":
+        x = m6Period;
+      break;
+      case "2w":
+        x = m1Period;
+      break;
+      case "1w":
+        x = w2Period;
+      break;      
+    }
+    d3.selectAll('.slider_g').transition().duration(2000).attr('transform','translate('+x+',0)');
   }

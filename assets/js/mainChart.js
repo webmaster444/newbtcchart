@@ -9,6 +9,16 @@ var siFormat = function(d) {
     return monthDay(d);
 };
 
+var oneMonthFormat = function(d){
+    var day = timeFormat(d);
+    if (day !== "01")
+        return day;
+    var i = data.findIndex(function(item, i) {
+        return item.x === d
+    });
+
+    return day + ' ' + timeFormatMonthOnly(d);
+}
 var divTooltip = d3.select(".widget").append("div").attr("class", "toolTip");
 
 var ttlCircleScale = d3.scaleLinear();
@@ -81,7 +91,13 @@ function drawChart(data) {
         y.domain([0, yMax]);
         y1.domain([y1Min, y1Max]);
 
-        var xAxis = d3.axisBottom(x).ticks(10).tickSizeOuter(0).tickFormat(siFormat);
+        // If period is one month then change tickFormat
+        if(data.length > 29){
+            var xAxis = d3.axisBottom(x).ticks(10).tickSizeOuter(0).tickFormat(oneMonthFormat);    
+        }else{
+            var xAxis = d3.axisBottom(x).ticks(10).tickSizeOuter(0).tickFormat(siFormat);
+        }        
+
         var yAxis = d3.axisLeft(y1).ticks(5).tickSize(-width);
 
         svg.append("g")
@@ -243,8 +259,7 @@ function drawChart(data) {
             .attr('r', 2)
             .attr("fill", "#9D93D3");
 
-    } else {
-        console.log($('#circle_toggle').prop('checked'));
+    } else {        
         var svg = d3.select("#mainchart").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -344,6 +359,10 @@ function drawChart(data) {
             .attr('r', 2)
             .attr("fill", "#9D93D3");
     }
+
+    if(cuPeriod=='1m'){
+        svg.selectAll('.x.axis .tick text').call(wrap, 20);
+    }
 }
 
 function updateCircles(toggle) {
@@ -352,20 +371,15 @@ function updateCircles(toggle) {
             return ttlCircleScale(d.tv)
         }).style('fill', '#1F89DC');
 
-        d3.select('#mainchart').selectAll('rect').transition().duration(2000).attr('y', (d) => y(0)).attr('height', 0);
+        d3.select('#mainchart').selectAll('rect.path_rect').transition().duration(2000).attr('y', (d) => y(0)).attr('height', 0);
+        d3.select('#mainchart').selectAll('rect.no_round_rect').transition().duration(2000).attr('y', (d) => y(0)).attr('height', 0);
     } else {
         d3.select('#mainchart').selectAll('circle.sum').transition().duration(2000).attr('r', function(d) {
             return circleScale(d.sumv)
         }).style('fill', '');
 
-        d3.select('#mainchart').selectAll('rect').transition().duration(2000).attr("y", function(d) {
-                return y(d.tv);
-            })
-            .attr("height", function(d) {
-                console.log(y(d.tv));
-                console.log(height);
-                return height - y(d.tv);
-            })
+        d3.select('#mainchart').selectAll('rect.path_rect').transition().duration(2000).attr("y", function(d) {return y(d.tv);}).attr("height", function(d) {return height - y(d.tv);})
+        d3.select('#mainchart').selectAll('rect.no_round_rect').transition().duration(2000).attr("y", function(d) {return y(d.tv) + 10;}).attr("height", function(d) {return height - y(d.tv) -10;})
     }
 }
 
@@ -420,17 +434,27 @@ function tweenDash() {
     };
 }
 
-function rightRoundedRect(x, y, w, h, r) {
-    var retval;
-    retval  = "M" + (x + r) + "," + y;
-    retval += "h" + (w - 2*r);
-    retval += "a" + r + "," + r + " 0 0 1 " + r + "," + r;
-    retval += "v" + (h - 2*r);    
-    retval += "v" + r; retval += "h" + -r;
-    retval += "h" + (2*r - w);    
-    retval += "h" + -r; retval += "v" + -r;
-    retval += "v" + (2*r - h);
-    retval += "a" + r + "," + r + " 0 0 1 " + r + "," + -r;     
-    retval += "z";
-    return retval;
+function wrap(text, width) {
+    text.each(function() {
+        var text = d3.select(this),
+            words = text.text().split(/\s+/).reverse(),
+            word,
+            line = [],
+            lineNumber = 0,
+            lineHeight = 1.1, // ems
+            y = text.attr("y"),
+            x = 0,
+            dy = parseFloat(text.attr("dy")),
+            tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
+        while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+                line.pop();
+                tspan.text(line.join(" "));
+                line = [word];
+                tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+            }
+        }
+    });
 }
