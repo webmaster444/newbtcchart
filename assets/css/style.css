@@ -104,6 +104,9 @@ path{
 	fill: none;
 }
 
+path.line{
+  stroke-width: 2px;
+}
 rect{
   fill: #353642;
 }
