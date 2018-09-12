@@ -55,7 +55,7 @@ function drawChart(data) {
         var formatSuffixDecimal2 = d3.format(",.2f");
 
         y = d3.scaleLinear().range([height, margin.top + height * 0.25]);
-        var y1 = d3.scaleLinear().range([height, margin.top]); // y - axis for line chart
+        var y1 = d3.scaleLinear().range([height, margin.top + height * 0.1]); // y - axis for line chart
 
         x.domain(data.map(function(d) {
             return d.date;
