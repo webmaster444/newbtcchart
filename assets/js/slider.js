@@ -5,8 +5,8 @@
   var cuPeriod;
   var widget_back = '#2C2D37';
   var svg = d3.select("#slider").append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
+  .attr('viewBox','0 0 '+ (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom))  
+  .attr("preserveAspectRatio", "xMinYMin meet")
   
   var x0=0, y0=55;
   var x1=40, y1=30;

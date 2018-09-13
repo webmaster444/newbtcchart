@@ -5,14 +5,16 @@ body, html{
 	background:#2C2D37;
   position: relative;  
   box-shadow: 0 6px 10px 0 rgba(26,27,36,0.6);
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 /* Slider */
 .switch {
   position: relative;
   display: inline-block;
-  width: 80px;
-  height: 34px;
+  width: 34px;
+  height: 14px;
 }
 
 /* Hide default HTML checkbox */
@@ -34,8 +36,8 @@ body, html{
 .slider:before {
   position: absolute;
   content: "";
-  height: 42px;
-  width: 42px;
+  height: 20px;
+  width: 20px;
   left: -4px;
   bottom: -4px;
   background-color: #24D17A;
@@ -53,14 +55,14 @@ input:focus + .slider {
 
 input:checked + .slider:before {
   background-color:#1F89DC;
-  -webkit-transform: translateX(46px);
-  -ms-transform: translateX(46px);
-  transform: translateX(46px);
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
 }
 
 /* Rounded sliders */
 .slider.round {
-  border-radius: 34px;
+  border-radius: 10px;
 }
 
 .slider.round:before {
@@ -86,6 +88,9 @@ input:checked + .slider:before {
 	margin: 10px 15px;
 }
 
+.toggle_btn_wrapper span{
+  font-size: 14px;
+}
 .widget{
 	border-radius: 10px;
 	padding:20px;
@@ -153,6 +158,9 @@ rect{
 .toolTip td{
   vertical-align: top;
   padding: 5px 15px;
+  font-family: "Source Sans Pro";
+  font-size: 11px;
+  line-height: 14px;
 }
 
 td img, td div{
@@ -183,11 +191,14 @@ td{
 .circle_tooltip{
   position: absolute;
   right: 0;
-  top: 70px;
+  top: 10px;
 }
 .circle_tooltip text{
   fill: beige;
   opacity: .8;
+  font-size: 10px;
+  line-height: 13px;
+  font-family: "Source Sans Pro";
 }
 
 .path_rect{
@@ -215,4 +226,37 @@ rect.hover_rect{
 
 .y.axis line{
   stroke-dasharray: 5 5;
+}
+
+.arrow_tooltip{
+  position: absolute;  
+}
+
+.bar_txt_up,.bar_txt_2_up{
+  fill: white;
+}
+
+#mainchart{
+  
+}
+
+#mainchart svg{
+  width: 100%;
+  height: 100%;
+}
+
+@font-face {
+    font-family: "FontAwesome";
+    font-weight: normal;
+    font-style : normal;
+           src : url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.eot?v=4.3.0");
+           src : url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.eot?#iefix&v=4.3.0") format("embedded-opentype"),
+                 url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.woff2?v=4.3.0") format("woff2"),
+                 url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.woff?v=4.3.0") format("woff"),
+                 url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.ttf?v=4.3.0") format("truetype"),
+                 url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/fonts/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular") format("svg");
+}
+
+.header h2{
+  font-size: 20px;
 }
