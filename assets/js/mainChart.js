@@ -1,12 +1,13 @@
 var url = 'https://decryptz.com/api/v1/charts/d3-tmp?period=1y&symbol=btc&key=JnW39hF43pkbqBo';
-var timeFormat = d3.timeFormat("%d");
-var dateTimeFormat = d3.timeFormat("%d %b,%y");
-var timeFormatMonthOnly = d3.timeFormat("%b");
-var monthDay = d3.timeFormat("%b %d");
+var timeFormat = d3.utcFormat("%d");
+var dateTimeFormat = d3.utcFormat("%d %b,%y");
+var timeFormatMonthOnly = d3.utcFormat("%b");
+var monthDay = d3.utcFormat("%b %d");
 var data;
 var x, y,y1;
 //y1 price line chart
 
+var commaFormat = d3.format(",");
 var siFormat = function(d) {
     return monthDay(d);
 };
@@ -37,8 +38,8 @@ var margin = {
 d3.json(url, function(error, jsondata) {
 
     jsondata.forEach(function(d) {
-        d.date = Date.parse(d.dt);
-        d.dateDisp = timeFormat(Date.parse(d.dt));
+        d.date = Date.parse(d.dt);        
+        d.dateDisp = timeFormat(Date.parse(d.dt));        
         d.sumv = +(d.pv + d.nv);
     });
 
@@ -48,9 +49,7 @@ d3.json(url, function(error, jsondata) {
 
 function drawChart(data) {
     if (!$('#circle_toggle').prop('checked')) {
-        var svg = d3.select("#mainchart").append("svg").attr('viewBox','0 0 '+ (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom))
-            // .attr("width", width + margin.left + margin.right)
-            // .attr("height", height + margin.top + margin.bottom)
+        var svg = d3.select("#mainchart").append("svg").attr('viewBox','0 0 '+ (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom))            
             .attr("preserveAspectRatio", "xMinYMin meet")
             .append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
@@ -72,9 +71,9 @@ function drawChart(data) {
             return d.tv
         })).range([x.bandwidth() / 4, x.bandwidth() / 2 * 1.2]);
 
-d3.selectAll('.large_circle_txt').text(d3.max(data,function(d){return d.tv}) + ' tweets');
-d3.selectAll('.medium_circle_txt').text(Math.ceil(d3.sum(data,function(d){return d.tv}) / data.length) + ' tweets');
-d3.selectAll('.small_circle_txt').text(d3.min(data,function(d){return d.tv}) + ' tweets');
+d3.selectAll('.large_circle_txt').text(d3.max(data,function(d){return commaFormat(d.tv)}) + ' tweets');
+d3.selectAll('.medium_circle_txt').text(commaFormat(Math.ceil(d3.sum(data,function(d){return d.tv}) / data.length)) + ' tweets');
+d3.selectAll('.small_circle_txt').text(d3.min(data,function(d){return commaFormat(d.tv)}) + ' tweets');
 
         var yMin = d3.min(data.map(function(d) {
             return d.tv - 1000
@@ -141,7 +140,7 @@ d3.selectAll('.small_circle_txt').text(d3.min(data,function(d){return d.tv}) + '
                 divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td><img src='assets/price.png' width='15px' alt='Price'>" + d.pr + "<br/><span class='tooltip-label font_light'>| Price</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#24D17A;height:8px;'></div>" + (d.pv / d.sumv * 100).toFixed(2) + "%<br/><span class='tooltip-label font_light'>| Positive</span></td></tr><tr><td></td><td><img src='assets/barchart.png' width='8px' alt='Price'>" + d.tv + "<br><span class='tooltip-label font_light'>| Total Tweet<br/> Volume</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#b02d42;height:8px;'></div>" + (d.nv / d.sumv * 100).toFixed(2) + "%<br><span class='tooltip-label font_light'>| Negative</span></td></table>");
                 d3.selectAll('rect.rect_'+i).classed('hover_rect',true);            
                 svg.append('text').attr('x',x(d.date) + x.bandwidth()-5).style('text-anchor','end').attr('y',y(d.tv) + 15).attr('font-family', 'FontAwesome').text(function(d){return '\uf102';}).attr('class','bar_txt_2_up');
-                svg.append('text').attr('x',x(d.date) + x.bandwidth()/2).style('text-anchor','middle').attr('y',y(d.tv) - 5).text(d.tv).attr('class','bar_txt_up');
+                svg.append('text').attr('x',x(d.date) + x.bandwidth()/2).style('text-anchor','middle').attr('y',y(d.tv) - 5).text(commaFormat(d.tv)).attr('class','bar_txt_up');
                 $('.circle_tooltip').removeClass('hide');
             }).on('mouseout', function(d,i) {
                 divTooltip.style("display", "none");                
@@ -183,7 +182,7 @@ d3.selectAll('.small_circle_txt').text(d3.min(data,function(d){return d.tv}) + '
                 divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td><img src='assets/price.png' width='8px' alt='Price'>" + d.pr + "<br/><span class='tooltip-label'>| Price</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#24D17A;height:8px;'></div>" + (d.pv / d.sumv * 100).toFixed(2) + "%<br/><span class='tooltip-label'>| Positive</span></td></tr><tr><td></td><td><img src='assets/barchart.png' width='8px' alt='Price'>" + d.tv + "<br><span class='tooltip-label'>| Total Tweet<br/> Volume</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#b02d42;height:8px;'></div>" + (d.nv / d.sumv * 100).toFixed(2) + "%<br><span class='tooltip-label'>|Negative</span></td></table>");
                 d3.selectAll('rect.rect_'+i).classed('hover_rect',true);
                 svg.append('text').attr('x',x(d.date) + x.bandwidth()-5).style('text-anchor','end').attr('y',y(d.tv) + 15).attr('font-family', 'FontAwesome').text(function(d){return '\uf102';}).attr('class','bar_txt_2_up');
-                svg.append('text').attr('x',x(d.date) + x.bandwidth()/2).style('text-anchor','middle').attr('y',y(d.tv) - 5).text(d.tv).attr('class','bar_txt_up');
+                svg.append('text').attr('x',x(d.date) + x.bandwidth()/2).style('text-anchor','middle').attr('y',y(d.tv) - 5).text(commaFormat(d.tv)).attr('class','bar_txt_up');
                 $('.circle_tooltip').removeClass('hide');
             }).on('mouseout', function(d,i) {
                 divTooltip.style("display", "none");
@@ -275,9 +274,13 @@ d3.selectAll('.small_circle_txt').text(d3.min(data,function(d){return d.tv}) + '
             .attr("fill", "#9D93D3");
 
     } else {        
-        var svg = d3.select("#mainchart").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+        // var svg = d3.select("#mainchart").append("svg")
+        //     .attr("width", width + margin.left + margin.right)
+        //     .attr("height", height + margin.top + margin.bottom)
+        //     .append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+        var svg = d3.select("#mainchart").append("svg").attr('viewBox','0 0 '+ (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom))            
+            .attr("preserveAspectRatio", "xMinYMin meet")
             .append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
         x = d3.scaleBand().range([0, width]).padding(0.1);
