@@ -137,7 +137,7 @@ d3.selectAll('.small_circle_txt').text(d3.min(data,function(d){return commaForma
                 l = l - 1
                 elementData = elements[l].__data__;
                 var index = $(elements[l].parentNode).index();
-                divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td><img src='assets/price.png' width='15px' alt='Price'>" + d.pr + "<br/><span class='tooltip-label font_light'>| Price</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#24D17A;height:8px;'></div>" + (d.pv / d.sumv * 100).toFixed(2) + "%<br/><span class='tooltip-label font_light'>| Positive</span></td></tr><tr><td></td><td><img src='assets/barchart.png' width='8px' alt='Price'>" + d.tv + "<br><span class='tooltip-label font_light'>| Total Tweet<br/> Volume</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#b02d42;height:8px;'></div>" + (d.nv / d.sumv * 100).toFixed(2) + "%<br><span class='tooltip-label font_light'>| Negative</span></td></table>");
+                divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td><img src='assets/price.png' width='15px' alt='Price'>" + commaFormat(d.pr) + "<br/><span class='tooltip-label font_light'>| Price</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#24D17A;height:8px;'></div>" + (d.pv / d.sumv * 100).toFixed(2) + "%<br/><span class='tooltip-label font_light'>| Positive</span></td></tr><tr><td></td><td><img src='assets/barchart.png' width='8px' alt='Price'>" + commaFormat(d.tv) + "<br><span class='tooltip-label font_light'>| Total Tweet<br/> Volume</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#b02d42;height:8px;'></div>" + (d.nv / d.sumv * 100).toFixed(2) + "%<br><span class='tooltip-label font_light'>| Negative</span></td></table>");
                 d3.selectAll('rect.rect_'+i).classed('hover_rect',true);            
                 svg.append('text').attr('x',x(d.date) + x.bandwidth()-5).style('text-anchor','end').attr('y',y(d.tv) + 15).attr('font-family', 'FontAwesome').text(function(d){return '\uf102';}).attr('class','bar_txt_2_up');
                 svg.append('text').attr('x',x(d.date) + x.bandwidth()/2).style('text-anchor','middle').attr('y',y(d.tv) - 5).text(commaFormat(d.tv)).attr('class','bar_txt_up');
@@ -179,7 +179,7 @@ d3.selectAll('.small_circle_txt').text(d3.min(data,function(d){return commaForma
                 l = l - 1
                 elementData = elements[l].__data__;
                 var index = $(elements[l].parentNode).index();
-                divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td><img src='assets/price.png' width='8px' alt='Price'>" + d.pr + "<br/><span class='tooltip-label'>| Price</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#24D17A;height:8px;'></div>" + (d.pv / d.sumv * 100).toFixed(2) + "%<br/><span class='tooltip-label'>| Positive</span></td></tr><tr><td></td><td><img src='assets/barchart.png' width='8px' alt='Price'>" + d.tv + "<br><span class='tooltip-label'>| Total Tweet<br/> Volume</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#b02d42;height:8px;'></div>" + (d.nv / d.sumv * 100).toFixed(2) + "%<br><span class='tooltip-label'>|Negative</span></td></table>");
+                divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td><img src='assets/price.png' width='8px' alt='Price'>" + commaFormat(d.pr) + "<br/><span class='tooltip-label'>| Price</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#24D17A;height:8px;'></div>" + (d.pv / d.sumv * 100).toFixed(2) + "%<br/><span class='tooltip-label'>| Positive</span></td></tr><tr><td></td><td><img src='assets/barchart.png' width='8px' alt='Price'>" + commaFormat(d.tv) + "<br><span class='tooltip-label'>| Total Tweet<br/> Volume</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#b02d42;height:8px;'></div>" + (d.nv / d.sumv * 100).toFixed(2) + "%<br><span class='tooltip-label'>|Negative</span></td></table>");
                 d3.selectAll('rect.rect_'+i).classed('hover_rect',true);
                 svg.append('text').attr('x',x(d.date) + x.bandwidth()-5).style('text-anchor','end').attr('y',y(d.tv) + 15).attr('font-family', 'FontAwesome').text(function(d){return '\uf102';}).attr('class','bar_txt_2_up');
                 svg.append('text').attr('x',x(d.date) + x.bandwidth()/2).style('text-anchor','middle').attr('y',y(d.tv) - 5).text(commaFormat(d.tv)).attr('class','bar_txt_up');
@@ -244,6 +244,19 @@ d3.selectAll('.small_circle_txt').text(d3.min(data,function(d){return commaForma
                 return "url('#circleGradient_" + i + "')";
             })
             .attr('r', 0)
+            .on('mousemove',function(d,i){
+                divTooltip.style("display", "inline-block");                
+                var elements = document.querySelectorAll(':hover');
+                l = elements.length
+                l = l - 1
+                elementData = elements[l].__data__;
+                var index = $(elements[l].parentNode).index();
+                divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td><img src='assets/price.png' width='15px' alt='Price'>" + commaFormat(d.pr) + "<br/><span class='tooltip-label font_light'>| Price</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#24D17A;height:8px;'></div>" + (d.pv / d.sumv * 100).toFixed(2) + "%<br/><span class='tooltip-label font_light'>| Positive</span></td></tr><tr><td></td><td><img src='assets/barchart.png' width='8px' alt='Price'>" + commaFormat(d.tv) + "<br><span class='tooltip-label font_light'>| Total Tweet<br/> Volume</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#b02d42;height:8px;'></div>" + (d.nv / d.sumv * 100).toFixed(2) + "%<br><span class='tooltip-label font_light'>| Negative</span></td></table>");                                        
+                $('.circle_tooltip').removeClass('hide');
+            }).on('mouseout',function(d,i){
+                divTooltip.style("display", "none");               
+                $('.circle_tooltip').addClass('hide');                
+            })
             .transition()
             .duration(2000)
             .attr('r', (d) => circleScale(d.sumv));
@@ -348,6 +361,19 @@ d3.selectAll('.small_circle_txt').text(d3.min(data,function(d){return commaForma
             .attr('cy', (d) => y1(d.pr))
             .attr('r', 0)
             .attr('fill', '#1f89dc')
+            .on('mousemove',function(d,i){
+                divTooltip.style("display", "inline-block");                
+                var elements = document.querySelectorAll(':hover');
+                l = elements.length
+                l = l - 1
+                elementData = elements[l].__data__;
+                var index = $(elements[l].parentNode).index();
+                divTooltip.html("<table><tr><td>" + siFormat(Date.parse(d.dt)) + "</td><td><img src='assets/price.png' width='15px' alt='Price'>" + commaFormat(d.pr) + "<br/><span class='tooltip-label font_light'>| Price</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#24D17A;height:8px;'></div>" + (d.pv / d.sumv * 100).toFixed(2) + "%<br/><span class='tooltip-label font_light'>| Positive</span></td></tr><tr><td></td><td><img src='assets/barchart.png' width='8px' alt='Price'>" + commaFormat(d.tv) + "<br><span class='tooltip-label font_light'>| Total Tweet<br/> Volume</span></td><td><div style='width:8px;display:inline-block;border-radius:1px;background:#b02d42;height:8px;'></div>" + (d.nv / d.sumv * 100).toFixed(2) + "%<br><span class='tooltip-label font_light'>| Negative</span></td></table>");                                        
+                $('.circle_tooltip').removeClass('hide');
+            }).on('mouseout',function(d,i){
+                divTooltip.style("display", "none");               
+                $('.circle_tooltip').addClass('hide');   
+            })
             .transition()
             .duration(2000)
             .attr('r', (d) => ttlCircleScale(d.tv));
