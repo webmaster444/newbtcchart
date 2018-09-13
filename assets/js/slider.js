@@ -71,10 +71,10 @@
   slider.append('text').attr('x',0).attr('y',y0 + 30).text('1 year').attr('class','start_period hide').attr('fill','#97979C');
   slider.append('text').attr('x',width).attr('y',y0 + 30).text('1 week').attr('class','end_period').attr('fill','#97979C').attr('text-anchor','end');
   var slider_g = slider.append('g').attr('class','slider_g').attr('transform','translate(0,0)').call(drag);
-  slider_g.append('line').attr('class','white_line').attr('x1',x0).attr('y1',y0).attr('x2',x2).attr('y2',y2).attr('stroke',widget_back).attr('stroke-width','2px');
+  slider_g.append('line').attr('class','white_line').attr('x1',x0).attr('y1',y0).attr('x2',x2).attr('y2',y2).attr('stroke',widget_back).attr('stroke-width','3px');
   var bCurve = slider_g.append("path")
   // .attr("d", "M "+ x0+","+y0 +" Q "+x1 +','+y1 + ' '+x2+','+y2)
-  .attr("d", "M 0,55 H 5 Q 40,30 80,55")
+  .attr("d", "M 0,55 H 5 Q 40,30 80,55 H 5")
   .attr("stroke", lineColor)
   .attr("stroke-width", "2px")
   .attr("fill", widget_back)

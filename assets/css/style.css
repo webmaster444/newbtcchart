@@ -224,7 +224,7 @@ td{
 .light .path_rect{
     fill: #E7E7E9;
 }
-rect.hover_rect{
+.light rect.hover_rect,rect.hover_rect{
   fill:#5243DE;
 }
 
@@ -255,8 +255,8 @@ rect.hover_rect{
   fill: white;
 }
 
-#mainchart{
-  
+.light .bar_txt_up{
+  fill: #190430;
 }
 
 #mainchart svg{

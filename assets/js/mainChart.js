@@ -213,7 +213,8 @@ d3.selectAll('.small_circle_txt').text(d3.min(data,function(d){return commaForma
         gradients.append("stop")
             .attr('class', 'start')
             .attr("offset", '0%')
-            .attr("stop-color", "#24D17A")
+            // .attr("stop-color", "#24D17A")
+            .attr("stop-color", "#0eea7b")
             .attr("stop-opacity", 1);
 
         gradients.append("stop")
@@ -222,13 +223,15 @@ d3.selectAll('.small_circle_txt').text(d3.min(data,function(d){return commaForma
                 var percent = d.pv / d.sumv * 100;
                 return percent + '%';
             })
-            .attr("stop-color", "#7A7658")
+            // .attr("stop-color", "#7A7658")
+            .attr("stop-color", "#756f46")
             .attr("stop-opacity", 1);
 
         gradients.append("stop")
             .attr('class', 'end')
             .attr("offset", "100%")
-            .attr("stop-color", "#BE2F3E")
+            // .attr("stop-color", "#BE2F3E")
+            .attr("stop-color", "#e2162c")
             .attr("stop-opacity", 1);
 
         var circles = svg.selectAll('circle').data(data).enter().append("circle")
