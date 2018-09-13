@@ -116,6 +116,9 @@ rect{
   fill: #353642;
 }
 
+.light rect{
+    fill: #E7E7E9;
+}
 .axis path{
   stroke:#3E3F49;
 }
@@ -125,6 +128,7 @@ rect{
 
 #period_span{
   color: #FBFBFB;
+  font-weight: bold;
 }
 
 #sentiment_span.active{
@@ -181,6 +185,9 @@ td{
     stroke: beige;
 }
 
+.light .dash_circle{
+  stroke: #190430;
+}
 .dash_line{
     stroke-dasharray: 4px;
     stroke-width: 1px;
@@ -188,6 +195,9 @@ td{
     opacity: .5;
 }
 
+.light .dash_line{
+  stroke: #190430;
+}
 .circle_tooltip{
   position: absolute;
   right: 0;
@@ -201,10 +211,19 @@ td{
   font-family: "Source Sans Pro";
 }
 
+.light .circle_tooltip circle{
+  color: #190430;
+}
+.light .circle_tooltip text{
+  fill:#190430;
+}
 .path_rect{
   fill:#353541;
 }
 
+.light .path_rect{
+    fill: #E7E7E9;
+}
 rect.hover_rect{
   fill:#5243DE;
 }
@@ -259,4 +278,32 @@ rect.hover_rect{
 
 .header h2{
   font-size: 20px;
+}
+
+.light .header h2{
+  color: #340667;
+}
+
+.light.widget{
+    background-color: #FFFFFF;
+    box-shadow: 0 18px 0 0 rgba(26,27,36,0.08);
+    border: 1px solid #808187;
+}
+
+.light #period_span{
+    color: #190430;    
+}
+
+.light .toolTip{
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 6px 0 rgba(118,116,116,0.5);
+}
+
+.light .toolTip td{
+  color: black;
+}
+
+.light .tooltip-label{
+  color: #190430;
+  opacity: .4;
 }
