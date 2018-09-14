@@ -16,3 +16,5 @@ svg.append('text').attr('x',0).attr('y',91).attr('class','small_circle_txt').tex
 svg.append('line').attr('x1',80).attr('y1',50).attr('x2',120).attr('y2',50).attr('class','dash_line');
 svg.append('line').attr('x1',80).attr('y1',71).attr('x2',145).attr('y2',71).attr('class','dash_line');
 svg.append('line').attr('x1',80).attr('y1',91).attr('x2',160).attr('y2',91).attr('class','dash_line');
+
+svg.append('text').attr('x',0).attr('y',120).text('Circles are sized according to Tweet volume');
