@@ -108,6 +108,21 @@
     var w2Period = yPeriod *4; //2w
     var w1Period = svgWidth //1w
 
+    if(x0 <= yPeriod){
+      period = "1y";
+    }else if(x0 > yPeriod && x0<=m6Period){
+      period = "6m";
+    }else if(x0 > m6Period && x0 <=m1Period){
+      period = "1m";
+    }else if(x0 > m1Period && x0 <=w2Period){
+      period = "2w";
+    }else if(x0 > w2Period && x0 <= w1Period){
+      period = "1w";
+    }
+
+    if(period==cuPeriod){
+console.log('asdfds');
+
     var compareXPos = 0;
     switch(cuPeriod){
       case "1y":
@@ -151,18 +166,7 @@
         period = '2w';
       }
     }
-    // if(x0 <= yPeriod){
-    //   period = "1y";
-    // }else if(x0 > yPeriod && x0<=m6Period){
-    //   period = "6m";
-    // }else if(x0 > m6Period && x0 <=m1Period){
-    //   period = "1m";
-    // }else if(x0 > m1Period && x0 <=w2Period){
-    //   period = "2w";
-    // }else if(x0 > w2Period && x0 <= w1Period){
-    //   period = "1w";
-    // }
-    
+}
     switch(period){
       case "1y":
         cuPeriod = '1y';
