@@ -72,9 +72,9 @@ function drawChart(data) {
             return d.tv
         })).range([x.bandwidth() / 4, x.bandwidth() / 2 * 1.2]);
 
-d3.selectAll('.large_circle_txt').text(d3.max(data,function(d){return commaFormat(d.tv)}) + ' tweets');
-d3.selectAll('.medium_circle_txt').text(commaFormat(Math.ceil(d3.sum(data,function(d){return d.tv}) / data.length)) + ' tweets');
-d3.selectAll('.small_circle_txt').text(d3.min(data,function(d){return commaFormat(d.tv)}) + ' tweets');
+d3.selectAll('.large_circle_txt').text(commaFormat(d3.max(data.map(function(d){return d.tv;}))) + ' tweets');
+d3.selectAll('.medium_circle_txt').text(commaFormat(Math.ceil(d3.sum(data.map(function(d){return d.tv})) / data.length)) + ' tweets');
+d3.selectAll('.small_circle_txt').text(commaFormat(d3.min(data.map(function(d){return d.tv;}))) + ' tweets');
 
         var yMin = d3.min(data.map(function(d) {
             return d.tv - 1000
