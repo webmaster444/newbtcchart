@@ -44,12 +44,21 @@ d3.json(url, function(error, jsondata) {
     });
 
     data = jsondata;
+    
+    $('#max_total_hidden').val(commaFormat(d3.max(data.map(function(d){return d.tv;}))) + ' tweets');
+    $('#max_sum_hidden').val(commaFormat(d3.max(data.map(function(d){return d.sumv;}))) + ' tweets');
+    $('#min_total_hidden').val(commaFormat(d3.min(data.map(function(d){return d.tv;}))) + ' tweets');
+    $('#min_sum_hidden').val(commaFormat(d3.min(data.map(function(d){return d.sumv;}))) + ' tweets');
+    $('#mid_total_hidden').val(commaFormat(Math.ceil(d3.sum(data.map(function(d){return d.tv})) / data.length)) + ' tweets');
+    $('#mid_sum_hidden').val(commaFormat(Math.ceil(d3.sum(data.map(function(d){return d.sumv})) / data.length)) + ' tweets');
+
     drawChart(data);
 });
 
 function drawChart(data) {
     console.log(cuPeriod);
     if (!$('#circle_toggle').prop('checked')) {
+        // sentiment checked
         var svg = d3.select("#mainchart").append("svg").attr('viewBox','0 0 '+ (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom))            
             .attr("preserveAspectRatio", "xMinYMin meet")
             .append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -72,9 +81,9 @@ function drawChart(data) {
             return d.tv
         })).range([x.bandwidth() / 4, x.bandwidth() / 2 * 1.2]);
 
-d3.selectAll('.large_circle_txt').text(commaFormat(d3.max(data.map(function(d){return d.tv;}))) + ' tweets');
-d3.selectAll('.medium_circle_txt').text(commaFormat(Math.ceil(d3.sum(data.map(function(d){return d.tv})) / data.length)) + ' tweets');
-d3.selectAll('.small_circle_txt').text(commaFormat(d3.min(data.map(function(d){return d.tv;}))) + ' tweets');
+d3.selectAll('.large_circle_txt').text($('#max_sum_hidden').val());
+d3.selectAll('.medium_circle_txt').text($('#mid_sum_hidden').val());
+d3.selectAll('.small_circle_txt').text($('#min_sum_hidden').val());
 
         var yMin = d3.min(data.map(function(d) {
             return d.tv - 1000
@@ -132,6 +141,7 @@ d3.selectAll('.small_circle_txt').text(commaFormat(d3.min(data.map(function(d){r
                 return y(0);
             })
             .on("mousemove", function(d,i) {
+                console.log(d);
                 divTooltip.style("display", "inline-block");                
                 var elements = document.querySelectorAll(':hover');
                 l = elements.length
@@ -291,6 +301,7 @@ d3.selectAll('.small_circle_txt').text(commaFormat(d3.min(data.map(function(d){r
             .attr("fill", "#9D93D3");
 
     } else {        
+        //tweet volume checked
         var svg = d3.select("#mainchart").append("svg").attr('viewBox','0 0 '+ (width + margin.left + margin.right) + ' ' + (height + margin.top + margin.bottom))            
             .attr("preserveAspectRatio", "xMinYMin meet")
             .append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -312,7 +323,11 @@ d3.selectAll('.small_circle_txt').text(commaFormat(d3.min(data.map(function(d){r
         ttlCircleScale.domain(d3.extent(data, function(d) {
             return d.tv
         })).range([x.bandwidth() / 4, x.bandwidth() / 2 * 1.2]);
-        
+
+d3.selectAll('.large_circle_txt').text($('#max_total_hidden').val());
+d3.selectAll('.medium_circle_txt').text($('#mid_total_hidden').val());
+d3.selectAll('.small_circle_txt').text($('#min_total_hidden').val());
+
         var yMin = d3.min(data.map(function(d) {
             return d.tv - 1000
         }));
@@ -523,13 +538,14 @@ d3.selectAll('.small_circle_txt').text(commaFormat(d3.min(data.map(function(d){r
     }
 }
 
-function updateCircles(toggle) {
-    console.log(toggle);
+function updateCircles(toggle) {    
     if (toggle) {
         d3.select('#mainchart').selectAll('circle.sum').attr('fill', '#1F89DC').transition().duration(2000).attr('r', function(d) {
             return ttlCircleScale(d.tv)
         });
-
+d3.selectAll('.large_circle_txt').text($('#max_total_hidden').val());
+d3.selectAll('.medium_circle_txt').text($('#mid_total_hidden').val());
+d3.selectAll('.small_circle_txt').text($('#min_total_hidden').val());
         d3.select('#mainchart').selectAll('rect.path_rect').transition().duration(2000).attr('y', (d) => y1(d.pr)).attr('height', 0);
         d3.select('#mainchart').selectAll('rect.no_round_rect').transition().duration(2000).attr('y', (d) => y1(d.pr)).attr('height', 0);
     } else {
@@ -538,6 +554,10 @@ function updateCircles(toggle) {
         }).transition().duration(2000).attr('r', function(d) {
             return circleScale(d.sumv)
         });
+
+d3.selectAll('.large_circle_txt').text($('#max_sum_hidden').val());
+d3.selectAll('.medium_circle_txt').text($('#mid_sum_hidden').val());
+d3.selectAll('.small_circle_txt').text($('#min_sum_hidden').val());
 
         d3.select('#mainchart').selectAll('rect.path_rect').attr('y', (d) => y1(d.pr)).transition().duration(2000).attr("y", function(d) {return y(d.tv);}).attr("height", function(d) {return height - y(d.tv);})
         d3.select('#mainchart').selectAll('rect.no_round_rect').attr('y', (d) => y1(d.pr)).transition().duration(2000).attr("y", function(d) {return y(d.tv) + 10;}).attr("height", function(d) {return height - y(d.tv) -10;})
@@ -554,7 +574,12 @@ function updateChartData(newPeriod) {
         });
 
         data = jsondata;
-
+        $('#max_total_hidden').val(commaFormat(d3.max(data.map(function(d){return d.tv;}))) + ' tweets');
+    $('#max_sum_hidden').val(commaFormat(d3.max(data.map(function(d){return d.sumv;}))) + ' tweets');
+    $('#min_total_hidden').val(commaFormat(d3.min(data.map(function(d){return d.tv;}))) + ' tweets');
+    $('#min_sum_hidden').val(commaFormat(d3.min(data.map(function(d){return d.sumv;}))) + ' tweets');
+    $('#mid_total_hidden').val(commaFormat(Math.ceil(d3.sum(data.map(function(d){return d.tv})) / data.length)) + ' tweets');
+    $('#mid_sum_hidden').val(commaFormat(Math.ceil(d3.sum(data.map(function(d){return d.sumv})) / data.length)) + ' tweets');
         $('#period_date').html(dateTimeFormat(Date.parse(data[0].dt)) + " - " + dateTimeFormat(Date.parse(data[data.length - 1].dt)))
 
         // $("#mainchart")
